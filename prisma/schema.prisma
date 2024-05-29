@@ -8,6 +8,45 @@ datasource db {
 }
 
 model User {
-    id   Int    @id @default(autoincrement())
-    name String
+    id        Int     @id @default(autoincrement())
+    name      String
+    password  String
+    salt      String
+    group     Group   @relation(fields: [groupId], references: [id])
+    groupId   Int     @unique
+    activated Boolean
+}
+
+model Group {
+    id          Int     @id @default(autoincrement())
+    name        String
+    logoUrl     String
+    description String
+    email       String
+    homepageUrl String
+    tags        String
+    approved    Boolean
+    User        User?
+    Lab         Lab?
+    Club        Club?
+}
+
+model Lab {
+    group   Group @relation(fields: [groupId], references: [id])
+    groupId Int   @unique
+
+    professor        String
+    numPostDoc       Int
+    numPhd           Int
+    numMaster        Int
+    numUnderGraduate Int
+    campus           String
+    roomNo           String
+}
+
+model Club {
+    group    Group  @relation(fields: [groupId], references: [id])
+    groupId  Int    @unique
+    campus   String
+    location String
 }
