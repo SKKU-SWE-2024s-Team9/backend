@@ -10,6 +10,7 @@ import { prisma } from "./prisma";
 import authRouter from "./domain/auth/auth.controller";
 import fileRouter from "./domain/file/files.controller";
 import userRouter from "./domain/user/users.controller";
+import groupRouter from "./domain/group/group.controller";
 
 async function main() {
   const app = express();
@@ -46,6 +47,8 @@ async function main() {
   apiRouter.use("/users", userRouter);
   apiRouter.use("/auth", authRouter);
   apiRouter.use("/files", fileRouter);
+  apiRouter.use("/groups", groupRouter);
+
 
   app.all("*", (req, res) => {
     res.status(404).json({ error: `${req.originalUrl} not found.` });

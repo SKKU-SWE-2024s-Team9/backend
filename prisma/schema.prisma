@@ -28,7 +28,7 @@ model Group {
     email       String
     homepageUrl String
     tags        String
-    approved    Boolean
+    approved    String
     User        User?
     Lab         Lab?
     Club        Club?
@@ -56,7 +56,6 @@ model Lab {
 model Club {
     group    Group  @relation(fields: [groupId], references: [id])
     groupId  Int    @unique
-    campus   String
     location String
 
     createdAt DateTime @default(now())
