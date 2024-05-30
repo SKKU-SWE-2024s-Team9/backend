@@ -2,10 +2,11 @@ import cookieParser from "cookie-parser";
 import express from "express";
 import session from "express-session";
 import helmet from "helmet";
-import path from "path";
 import filestore from "session-file-store";
 import * as uuid from "uuid";
+
 import { prisma } from "./prisma";
+import { staticPath } from "./util/path";
 
 import authRouter from "./domain/auth/auth.controller";
 import fileRouter from "./domain/file/files.controller";
@@ -19,7 +20,7 @@ async function main() {
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(cookieParser());
-  app.use(express.static(path.join(__dirname, "public")));
+  app.use(express.static(staticPath));
 
   const FileStore = filestore(session);
   const sessionInfo: session.SessionOptions = {
