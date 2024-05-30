@@ -1,7 +1,11 @@
 import express from "express";
+import session from "express-session";
 import helmet from "helmet";
 import path from "path";
+import filestore from "session-file-store";
 import { prisma } from "./prisma";
+import uuid from "uuid";
+import cookieParser from "cookie-parser";
 
 import userRouter from "./domain/user/users.controller";
 
@@ -11,7 +15,28 @@ async function main() {
 
   app.use(helmet());
   app.use(express.json());
+  app.use(express.urlencoded({ extended: false }));
+  app.use(cookieParser());
   app.use(express.static(path.join(__dirname, "public")));
+
+  const FileStore = filestore(session);
+  const sessionInfo: session.SessionOptions = {
+    secret: "SecretKey",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      httpOnly: true,
+    },
+    store: new FileStore(),
+    genid() {
+      return uuid.v4();
+    },
+  };
+  if (app.get("env") === "production") {
+    app.set("trust proxy", 1);
+    sessionInfo.cookie!.secure = true;
+  }
+  app.use(session(sessionInfo));
 
   const apiRouter = express.Router();
   app.use("/api", apiRouter);
