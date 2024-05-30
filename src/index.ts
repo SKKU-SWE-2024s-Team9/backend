@@ -1,12 +1,14 @@
+import cookieParser from "cookie-parser";
 import express from "express";
 import session from "express-session";
 import helmet from "helmet";
 import path from "path";
 import filestore from "session-file-store";
+import * as uuid from "uuid";
 import { prisma } from "./prisma";
-import uuid from "uuid";
-import cookieParser from "cookie-parser";
 
+import authRouter from "./domain/auth/auth.controller";
+import fileRouter from "./domain/file/files.controller";
 import userRouter from "./domain/user/users.controller";
 
 async function main() {
@@ -42,6 +44,8 @@ async function main() {
   app.use("/api", apiRouter);
 
   apiRouter.use("/users", userRouter);
+  apiRouter.use("/auth", authRouter);
+  apiRouter.use("/files", fileRouter);
 
   app.all("*", (req, res) => {
     res.status(404).json({ error: `${req.originalUrl} not found.` });
