@@ -1,7 +1,7 @@
 //enum campus type (자과캠 / 인사캠)
 enum CampusType {
-  NC = "자과캠",
-  IC = "인사캠",
+  NC = "자연과학캠퍼스",
+  IC = "인문사회캠퍼스",
 }
 
 export interface GroupCreateDto {

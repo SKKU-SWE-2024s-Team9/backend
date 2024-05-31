@@ -5,17 +5,41 @@ import { INTERNAL_SERVER_ERROR, NOT_FOUND, OK } from "../../util/status-code";
 
 const router = express.Router();
 
+interface FormResponse {
+  id: number;
+  name: string;
+  description: string;
+  createdAt: Date;
+}
+
 router.get("/forms", async (req, res) => {
-  const forms = await prisma.group.findMany({
+  const groups = await prisma.group.findMany({
     where: { approved: { in: ["PENDING", "UPDATED"] } },
-    select: {
-      id: true,
-      name: true,
-      description: true,
+    include: {
+      Club: true,
+      Lab: true,
     },
   });
 
-  res.status(200).json(forms);
+  const forms = {
+    lab: [] as FormResponse[],
+    club: [] as FormResponse[],
+  };
+  groups.forEach((group) => {
+    const form = {
+      id: group.id,
+      name: group.name,
+      description: group.description,
+      createdAt: group.createdAt,
+    };
+    if (group.Club) {
+      forms.lab.push(form);
+    } else if (group.Lab) {
+      forms.club.push(form);
+    }
+  });
+
+  res.status(OK).json(forms);
 });
 
 router.post("/approve", async (req, res) => {

@@ -53,7 +53,7 @@ async function main() {
   apiRouter.use("/users", userRouter);
   apiRouter.use("/auth", authRouter);
   apiRouter.use("/files", fileRouter);
-  apiRouter.use("/groups", groupRouter);
+  apiRouter.use("/", groupRouter);
   apiRouter.use("/manage", checkRole("MANAGER"), manageRouter);
 
   app.all("*", (req, res) => {
