@@ -1,4 +1,4 @@
-import { encryptPassword, generateSalt } from "../../lib/password/validation";
+import { encryptPassword, generateSalt } from "../../lib/passport/validation";
 import { prisma } from "../../prisma";
 import { createUser } from "../user/users.service";
 import { LabCreateDto, LabUpdateDto } from "./group.dto";
@@ -34,13 +34,13 @@ export const CreateLab = async (labData: LabCreateDto) => {
           },
         },
       });
-      
+
       // createUser 사용하려했는데, 오류를 마주치는 바람에..ㅠ
       // const createdUser = await createUser({
       //   name: labData.username,
       //   password: labData.password,
       //   groupId: createdGroup.id,
-      // });      
+      // });
 
       const salt = await generateSalt();
       const key = await encryptPassword(labData.password, salt);
@@ -53,7 +53,7 @@ export const CreateLab = async (labData: LabCreateDto) => {
           group: {
             connect: { id: createdGroup.id },
           },
-          role: "USER"
+          role: "USER",
         },
       });
 
@@ -82,7 +82,7 @@ export const UpdateLab = async (groupId: Number, labData: LabUpdateDto) => {
           approved: "UPDATED",
         },
       });
-      
+
       const updatedLab = await prisma.lab.update({
         where: { groupId: groupId },
         data: {
@@ -102,4 +102,4 @@ export const UpdateLab = async (groupId: Number, labData: LabUpdateDto) => {
   } catch (error) {
     throw error;
   }
-}
+};

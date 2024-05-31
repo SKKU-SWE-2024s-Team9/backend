@@ -1,4 +1,4 @@
-import { encryptPassword, generateSalt } from "../../lib/password/validation";
+import { encryptPassword, generateSalt } from "../../lib/passport/validation";
 import { prisma } from "../../prisma";
 
 interface UserCreateDto {
