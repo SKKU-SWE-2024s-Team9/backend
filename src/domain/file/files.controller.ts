@@ -3,6 +3,7 @@ import multer from "multer";
 import path from "node:path";
 import { v4 } from "uuid";
 import { staticPath } from "../../util/path";
+import { INTERNAL_SERVER_ERROR, OK } from "../../util/status-code";
 
 const router = express.Router();
 
@@ -20,8 +21,8 @@ const uploadImage = multer({
 router.use(uploadImage.single("file"));
 
 router.post("/image", (req, res) => {
-  if (!req.file) res.status(500).end();
-  res.status(200).json({ path: `/image/${req.file?.filename}` });
+  if (!req.file) res.status(INTERNAL_SERVER_ERROR).end();
+  res.status(OK).json({ path: `/image/${req.file?.filename}` });
 });
 
 export default router;

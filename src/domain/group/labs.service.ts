@@ -1,6 +1,5 @@
 import { encryptPassword, generateSalt } from "../../lib/passport/validation";
 import { prisma } from "../../prisma";
-import { createUser } from "../user/users.service";
 import { LabCreateDto, LabUpdateDto } from "./group.dto";
 
 export const CreateLab = async (labData: LabCreateDto) => {
@@ -65,7 +64,7 @@ export const CreateLab = async (labData: LabCreateDto) => {
   }
 };
 
-export const UpdateLab = async (groupId: Number, labData: LabUpdateDto) => {
+export const UpdateLab = async (groupId: number, labData: LabUpdateDto) => {
   try {
     const tagsString = labData.tags.join(",");
 

@@ -1,5 +1,5 @@
-import nodemailer from 'nodemailer';
 import dotenv from "dotenv";
+import nodemailer from "nodemailer";
 dotenv.config();
 
 const SMTP_ID = process.env.SMTP_ID;
@@ -11,17 +11,21 @@ interface MailSendProps {
   html: string;
 }
 
-export const mailSend = async ({ to, subject, html }: MailSendProps): Promise<nodemailer.SentMessageInfo> => {
+export const sendMail = async ({
+  to,
+  subject,
+  html,
+}: MailSendProps): Promise<nodemailer.SentMessageInfo> => {
   if (!to) throw new Error('Need "to" Propertie.');
 
   try {
-    console.log(SMTP_ID, SMTP_PW)
+    console.log(SMTP_ID, SMTP_PW);
     const transporter = nodemailer.createTransport({
       service: "gmail",
       host: "smtp.gmail.com",
       port: 587,
       secure: false,
-      auth: {       
+      auth: {
         user: SMTP_ID,
         pass: SMTP_PW,
       },
@@ -38,6 +42,6 @@ export const mailSend = async ({ to, subject, html }: MailSendProps): Promise<no
     return result;
   } catch (error) {
     console.error(error);
-    throw new Error('Failed to send email');
+    throw new Error("Failed to send email");
   }
-}
+};

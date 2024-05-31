@@ -1,6 +1,6 @@
 import { encryptPassword, generateSalt } from "../../lib/passport/validation";
 import { prisma } from "../../prisma";
-import { ClubCreateDto } from "./group.dto";
+import { ClubCreateDto, ClubUpdateDto } from "./group.dto";
 
 export const CreateClub = async (clubData: ClubCreateDto) => {
   try {
@@ -39,7 +39,7 @@ export const CreateClub = async (clubData: ClubCreateDto) => {
           group: {
             connect: { id: createdGroup.id },
           },
-          role: "USER"
+          role: "USER",
         },
       });
 
@@ -47,8 +47,8 @@ export const CreateClub = async (clubData: ClubCreateDto) => {
     });
     return club;
   } catch (error) {
-    return error;
-   }
+    throw error;
+  }
 };
 
 export const UpdateClub = async (clubId: number, clubData: ClubUpdateDto) => {
@@ -56,14 +56,14 @@ export const UpdateClub = async (clubId: number, clubData: ClubUpdateDto) => {
     const tagsString = clubData.tags.join(",");
 
     // check if the group is club
-    const club = await prisma.club.findUnique({
+    let club = await prisma.club.findUnique({
       where: { groupId: clubId },
     });
     if (!club) {
       throw new Error("The group is not a club.");
     }
 
-    const club = await prisma.$transaction(async (prisma) => {
+    club = await prisma.$transaction(async (prisma) => {
       const updatedGroup = await prisma.group.update({
         where: { id: clubId },
         data: {

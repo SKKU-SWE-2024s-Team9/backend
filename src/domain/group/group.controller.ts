@@ -1,13 +1,24 @@
-import express from 'express';
-import { prisma } from '../../prisma';
-import { LabCreateDto, LabUpdateDto } from './group.dto';
-import { CreateLab, UpdateLab } from './labs.service';
-import { CreateClub, UpdateClub } from './clubs.service';
+import express from "express";
+import { prisma } from "../../prisma";
+import { CreateClub, UpdateClub } from "./clubs.service";
+import {
+  ClubCreateDto,
+  ClubUpdateDto,
+  LabCreateDto,
+  LabUpdateDto,
+} from "./group.dto";
+import { CreateLab, UpdateLab } from "./labs.service";
+import {
+  CREATED,
+  INTERNAL_SERVER_ERROR,
+  NOT_FOUND,
+  OK,
+} from "../../util/status-code";
 
 const router = express.Router();
 
-router.get('/labs', async (req, res) => {
-  const keyword = req.query.keyword;
+router.get("/labs", async (req, res) => {
+  const keyword = req.query.keyword as string;
 
   let labs = null;
   if (keyword) {
@@ -91,18 +102,17 @@ router.get('/labs', async (req, res) => {
     let reslabs: any[] = [];
     labs.map((lab) => {
       const { group, ...labData } = lab;
-      const result = { ...group, ...labData};
+      const result = { ...group, ...labData };
       reslabs.push(result);
     });
 
-    res.status(200).json(reslabs);
+    res.status(OK).json(reslabs);
   } else {
-    res.status(404).end();
+    res.status(NOT_FOUND).end();
   }
-
 });
 
-router.get('/labs/:labId', async (req, res) => {
+router.get("/labs/:labId", async (req, res) => {
   const labId = Number(req.params.labId);
   const lab = await prisma.lab.findFirst({
     where: {
@@ -134,43 +144,47 @@ router.get('/labs/:labId', async (req, res) => {
     },
   });
 
-
   if (lab) {
     const { group, ...labData } = lab;
-    const result = { ...group, ...labData};
+    const result = { ...group, ...labData };
 
-    res.status(200).json(result);
+    res.status(OK).json(result);
   } else {
-    res.status(404).end();
+    res.status(NOT_FOUND).end();
   }
 });
 
-router.post('/labs', async (req, res) => {
+router.post("/labs", async (req, res) => {
   try {
     const labCreateDto: LabCreateDto = req.body;
     const lab = await CreateLab(labCreateDto);
-    res.status(201).json(lab.groupId);
-  }catch (error) {
+    res.status(CREATED).json(lab.groupId);
+  } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Failed to create lab', message: error.message});
+    res.status(INTERNAL_SERVER_ERROR).json({
+      error: "Failed to create lab",
+      message: (error as Error).message,
+    });
   }
-
 });
 
-router.put('/labs/:labId', async (req, res) => {
+router.put("/labs/:labId", async (req, res) => {
   try {
     const groupId = Number(req.params.labId);
     const labUpdateDto: LabUpdateDto = req.body;
     const lab = await UpdateLab(groupId, labUpdateDto);
-    res.status(200).json(lab.groupId);
-  }catch (error) {
+    res.status(OK).json(lab.groupId);
+  } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Failed to update lab', message: error.message});
+    res.status(INTERNAL_SERVER_ERROR).json({
+      error: "Failed to update lab",
+      message: (error as Error).message,
+    });
   }
 });
 
-router.get('/clubs', async (req, res) => {
-  const keyword = req.query.keyword;
+router.get("/clubs", async (req, res) => {
+  const keyword = req.query.keyword as string;
 
   let clubs = null;
   if (keyword) {
@@ -242,15 +256,15 @@ router.get('/clubs', async (req, res) => {
     let resclubs: any[] = [];
     clubs.map((club) => {
       const { group, ...clubData } = club;
-      const result = { ...group, ...clubData};
+      const result = { ...group, ...clubData };
       resclubs.push(result);
     });
 
-    res.status(200).json(resclubs);
+    res.status(OK).json(resclubs);
   }
 });
 
-router.get('/clubs/:clubId', async (req, res) => {
+router.get("/clubs/:clubId", async (req, res) => {
   const clubId = Number(req.params.clubId);
   const club = await prisma.club.findFirst({
     where: {
@@ -278,34 +292,40 @@ router.get('/clubs/:clubId', async (req, res) => {
 
   if (club) {
     const { group, ...clubData } = club;
-    const result = { ...group, ...clubData};
+    const result = { ...group, ...clubData };
 
-    res.status(200).json(result);
+    res.status(OK).json(result);
   } else {
-    res.status(404).end();
+    res.status(NOT_FOUND).end();
   }
 });
 
-router.post('/clubs', async (req, res) => {
+router.post("/clubs", async (req, res) => {
   try {
-    const clubCreateDto: LabCreateDto = req.body;
+    const clubCreateDto: ClubCreateDto = req.body;
     const club = await CreateClub(clubCreateDto);
-    res.status(201).json(club.groupId);
+    res.status(CREATED).json(club.groupId);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Failed to create club' , message: error.message});
+    res.status(INTERNAL_SERVER_ERROR).json({
+      error: "Failed to create club",
+      message: (error as Error).message,
+    });
   }
 });
 
-router.put('/clubs/:clubId', async (req, res) => {
+router.put("/clubs/:clubId", async (req, res) => {
   try {
     const groupId = Number(req.params.clubId);
-    const clubUpdateDto: LabUpdateDto = req.body;
+    const clubUpdateDto: ClubUpdateDto = req.body;
     const club = await UpdateClub(groupId, clubUpdateDto);
-    res.status(200).json(club.groupId);
+    res.status(OK).json(club.groupId);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Failed to update club', message: error.message});
+    res.status(INTERNAL_SERVER_ERROR).json({
+      error: "Failed to update club",
+      message: (error as Error).message,
+    });
   }
 });
 

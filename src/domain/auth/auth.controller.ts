@@ -1,7 +1,8 @@
-import express, { Request, Response } from "express";
+import express, { Request } from "express";
 import passport, { AuthenticateCallback } from "passport";
 import { z } from "zod";
 import { authLoginRequestSchema } from "./auth.model";
+import { OK, UNAUTHORIZED } from "../../util/status-code";
 
 const router = express.Router();
 
@@ -12,13 +13,13 @@ router.post("/login", (req: Request<{}, {}, AuthLoginRequest>, res, next) => {
       return next(err);
     }
     if (!user) {
-      return res.status(401).end();
+      return res.status(UNAUTHORIZED).end();
     }
     req.login(user, (err) => {
       if (err) {
         return next(err);
       }
-      return res.status(200).end();
+      return res.status(OK).end();
     });
   };
   passport.authenticate("login", authLogin)(req, res, next);

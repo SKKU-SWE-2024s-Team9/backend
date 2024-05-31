@@ -1,13 +1,7 @@
 import { encryptPassword, generateSalt } from "../../lib/passport/validation";
 import { prisma } from "../../prisma";
+import { UserCreateDto } from "./users.dto";
 
-interface UserCreateDto {
-  name: string;
-  password: string;
-  role: string;
-  groupId?: number;
-  manager?: boolean;
-}
 export const createUser = async ({
   name,
   password,
