@@ -1,14 +1,11 @@
-import { encryptPassword, generateSalt } from "../../lib/password/validation";
+import { encryptPassword, generateSalt } from "../../lib/passport/validation";
 import { prisma } from "../../prisma";
+import { UserCreateDto } from "./users.dto";
 
-interface UserCreateDto {
-  name: string;
-  password: string;
-  groupId: number;
-}
 export const createUser = async ({
   name,
   password,
+  role,
   groupId,
 }: UserCreateDto) => {
   try {
@@ -19,6 +16,7 @@ export const createUser = async ({
         name,
         password: key,
         salt,
+        role,
         activated: false,
         groupId,
       },

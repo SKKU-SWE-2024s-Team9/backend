@@ -3,3 +3,6 @@ dist/
 sessions/
 public/image/*
 !public/image/.gitkeep
+!public/image/skku.png
+!public/image/mav_logo.png
+.env

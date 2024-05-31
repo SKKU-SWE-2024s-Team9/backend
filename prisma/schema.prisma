@@ -12,8 +12,9 @@ model User {
     name      String  @unique
     password  String
     salt      String
-    group     Group   @relation(fields: [groupId], references: [id])
-    groupId   Int     @unique
+    role      String
+    group     Group?  @relation(fields: [groupId], references: [id])
+    groupId   Int?    @unique
     activated Boolean
 
     createdAt DateTime @default(now())
@@ -21,14 +22,14 @@ model User {
 }
 
 model Group {
-    id          Int     @id @default(autoincrement())
+    id          Int    @id @default(autoincrement())
     name        String
     logoUrl     String
     description String
     email       String
     homepageUrl String
     tags        String
-    approved    Boolean
+    approved    String
     User        User?
     Lab         Lab?
     Club        Club?
@@ -56,7 +57,6 @@ model Lab {
 model Club {
     group    Group  @relation(fields: [groupId], references: [id])
     groupId  Int    @unique
-    campus   String
     location String
 
     createdAt DateTime @default(now())
