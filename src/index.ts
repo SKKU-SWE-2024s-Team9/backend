@@ -13,6 +13,7 @@ import fileRouter from "./domain/file/files.controller";
 import userRouter from "./domain/user/users.controller";
 import groupRouter from "./domain/group/group.controller";
 import manageRouter from "./domain/manage/manage.controller";
+import { checkRole } from "./util/role";
 
 async function main() {
   const app = express();
@@ -50,7 +51,7 @@ async function main() {
   apiRouter.use("/auth", authRouter);
   apiRouter.use("/files", fileRouter);
   apiRouter.use("/groups", groupRouter);
-  apiRouter.use("/manage", manageRouter);
+  apiRouter.use("/manage", checkRole("MANAGER"), manageRouter);
 
 
   app.all("*", (req, res) => {

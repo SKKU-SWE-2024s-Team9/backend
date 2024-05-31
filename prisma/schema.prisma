@@ -15,6 +15,7 @@ model User {
     group     Group   @relation(fields: [groupId], references: [id])
     groupId   Int     @unique
     activated Boolean
+    role      String
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

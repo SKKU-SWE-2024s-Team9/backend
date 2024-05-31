@@ -39,6 +39,7 @@ export const CreateClub = async (clubData: ClubCreateDto) => {
           group: {
             connect: { id: createdGroup.id },
           },
+          role: "USER"
         },
       });
 

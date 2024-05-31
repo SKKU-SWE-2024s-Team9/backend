@@ -53,6 +53,7 @@ export const CreateLab = async (labData: LabCreateDto) => {
           group: {
             connect: { id: createdGroup.id },
           },
+          role: "USER"
         },
       });
 
