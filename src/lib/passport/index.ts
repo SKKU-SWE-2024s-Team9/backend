@@ -1,10 +1,11 @@
+import { type Express } from "express";
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { authLoginRequestSchema } from "../../domain/auth/auth.model";
 import { prisma } from "../../prisma";
 import { validatePassword } from "./validation";
 
-export const configure = () => {
+export const configure = (app: Express) => {
   passport.serializeUser((user, done) => {
     done(null, user.id);
   });
@@ -16,12 +17,13 @@ export const configure = () => {
       });
       done(null, user);
     } catch (e) {
+      console.error(e);
       done(e);
     }
   });
 
   passport.use(
-    "local-login",
+    "login",
     new LocalStrategy(
       {
         usernameField: "username",
@@ -30,9 +32,11 @@ export const configure = () => {
         passReqToCallback: false,
       },
       async (username, password, done) => {
-        const result = authLoginRequestSchema.safeParse({ username, password });
+        const result = await authLoginRequestSchema.safeParseAsync({
+          username,
+          password,
+        });
         if (!result.success) {
-          console.log(result.error.message);
           return done(null, false, {
             message: result.error.message,
           });
@@ -51,12 +55,12 @@ export const configure = () => {
         }
 
         try {
-          authLoginRequestSchema.parse({ username, password });
+          await authLoginRequestSchema.parseAsync({ username, password });
           if (await validatePassword(user, password)) {
-            console.log("Valid");
             return done(null, user);
           }
         } catch (e) {
+          console.error(e);
           return done(null, false, {
             message: "Password does not match!",
           });
@@ -64,4 +68,7 @@ export const configure = () => {
       }
     )
   );
+
+  app.use(passport.initialize());
+  app.use(passport.session());
 };

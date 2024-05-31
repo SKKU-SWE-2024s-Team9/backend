@@ -7,6 +7,7 @@ import * as uuid from "uuid";
 
 import { prisma } from "./prisma";
 import { staticPath } from "./util/path";
+import * as passport from "./lib/passport";
 
 import authRouter from "./domain/auth/auth.controller";
 import fileRouter from "./domain/file/files.controller";
@@ -44,6 +45,8 @@ async function main() {
   }
   app.use(session(sessionInfo));
 
+  passport.configure(app);
+
   const apiRouter = express.Router();
   app.use("/api", apiRouter);
 
@@ -52,7 +55,6 @@ async function main() {
   apiRouter.use("/files", fileRouter);
   apiRouter.use("/groups", groupRouter);
   apiRouter.use("/manage", checkRole("MANAGER"), manageRouter);
-
 
   app.all("*", (req, res) => {
     res.status(404).json({ error: `${req.originalUrl} not found.` });

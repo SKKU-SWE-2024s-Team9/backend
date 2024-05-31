@@ -21,7 +21,7 @@ router.post("/login", (req: Request<{}, {}, AuthLoginRequest>, res, next) => {
       return res.status(200).end();
     });
   };
-  passport.authenticate("login", authLogin);
+  passport.authenticate("login", authLogin)(req, res, next);
 });
 
 router.get("/logout", (req, res, next) => {
