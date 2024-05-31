@@ -12,6 +12,7 @@ import authRouter from "./domain/auth/auth.controller";
 import fileRouter from "./domain/file/files.controller";
 import userRouter from "./domain/user/users.controller";
 import groupRouter from "./domain/group/group.controller";
+import manageRouter from "./domain/manage/manage.controller";
 
 async function main() {
   const app = express();
@@ -49,6 +50,7 @@ async function main() {
   apiRouter.use("/auth", authRouter);
   apiRouter.use("/files", fileRouter);
   apiRouter.use("/groups", groupRouter);
+  apiRouter.use("/manage", manageRouter);
 
 
   app.all("*", (req, res) => {

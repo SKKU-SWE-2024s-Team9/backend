@@ -3,3 +3,4 @@ dist/
 sessions/
 public/image/*
 !public/image/.gitkeep
+.env
