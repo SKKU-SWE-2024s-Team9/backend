@@ -12,17 +12,17 @@ model User {
     name      String  @unique
     password  String
     salt      String
-    group     Group   @relation(fields: [groupId], references: [id])
-    groupId   Int     @unique
-    activated Boolean
     role      String
+    group     Group?  @relation(fields: [groupId], references: [id])
+    groupId   Int?    @unique
+    activated Boolean
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 }
 
 model Group {
-    id          Int     @id @default(autoincrement())
+    id          Int    @id @default(autoincrement())
     name        String
     logoUrl     String
     description String

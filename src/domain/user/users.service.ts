@@ -4,11 +4,14 @@ import { prisma } from "../../prisma";
 interface UserCreateDto {
   name: string;
   password: string;
-  groupId: number;
+  role: string;
+  groupId?: number;
+  manager?: boolean;
 }
 export const createUser = async ({
   name,
   password,
+  role,
   groupId,
 }: UserCreateDto) => {
   try {
@@ -19,6 +22,7 @@ export const createUser = async ({
         name,
         password: key,
         salt,
+        role,
         activated: false,
         groupId,
       },
