@@ -49,3 +49,7 @@ export interface LabUpdateDto extends GroupUpdateDto {
     roomNo: string;
     campus: CampusType;
 }
+
+export interface ClubUpdateDto extends GroupUpdateDto {
+    location: string;
+}
