@@ -13,7 +13,6 @@ services:
     volumes:
       - file-data:/app/public
       
-  
   db:
     container_name: db
     image: postgres:13
