@@ -41,3 +41,9 @@ npm run dev
   "username": "mav"
   "password": "mavmavA1!@"
 
+## 운영 서버 실행
+1. `.env` 파일을 생성한다.
+2. 서버를 실행한다.
+```bash
+docker compose up -d
+```
