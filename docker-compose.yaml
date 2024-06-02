@@ -1,0 +1,21 @@
+version: "3.7"
+
+services:
+  backend:
+    container_name: backend
+    build: ./
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://${DATABASE_USER}:${DATABASE_PW}@db:5432/${DATABASE_NAME}
+  
+  db:
+    container_name: db
+    image: postgres:13
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PW}
+      POSTGRES_DB: ${DATABASE_NAME}
+
