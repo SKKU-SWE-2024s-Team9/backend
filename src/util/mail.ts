@@ -19,7 +19,6 @@ export const sendMail = async ({
   if (!to) throw new Error('Need "to" Propertie.');
 
   try {
-    console.log(SMTP_ID, SMTP_PW);
     const transporter = nodemailer.createTransport({
       service: "gmail",
       host: "smtp.gmail.com",
