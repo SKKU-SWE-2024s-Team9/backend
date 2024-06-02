@@ -10,6 +10,9 @@ services:
       - db
     environment:
       DATABASE_URL: postgres://${DATABASE_USER}:${DATABASE_PW}@db:5432/${DATABASE_NAME}
+    volumes:
+      - file-data:/app/public
+      
   
   db:
     container_name: db
@@ -21,3 +24,5 @@ services:
       POSTGRES_PASSWORD: ${DATABASE_PW}
       POSTGRES_DB: ${DATABASE_NAME}
 
+volumes:
+  file-data:
