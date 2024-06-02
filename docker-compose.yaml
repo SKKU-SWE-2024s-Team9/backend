@@ -8,8 +8,8 @@ services:
       - "3000:3000"
     depends_on:
       - db
-    environment:
-      DATABASE_URL: postgres://${DATABASE_USER}:${DATABASE_PW}@db:5432/${DATABASE_NAME}
+    env_file:
+      - .env
     volumes:
       - file-data:/app/public
       
@@ -18,11 +18,11 @@ services:
     container_name: db
     image: postgres:13
     ports:
-      - "5432:5432"
+      - "5432"
     environment:
-      POSTGRES_USER: ${DATABASE_USER}
-      POSTGRES_PASSWORD: ${DATABASE_PW}
-      POSTGRES_DB: ${DATABASE_NAME}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
 
 volumes:
   file-data:

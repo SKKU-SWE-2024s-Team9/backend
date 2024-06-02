@@ -1,0 +1,12 @@
+version: "3.7"
+
+services:
+  test-db:
+    container_name: test-db
+    image: postgres:13
+    environment:
+      POSTGRES_USER: useruser
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: dbdb
+    ports:
+      - "5433:5432"

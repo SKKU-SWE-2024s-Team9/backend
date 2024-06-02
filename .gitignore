@@ -6,3 +6,4 @@ public/image/*
 !public/image/skku.png
 !public/image/mav_logo.png
 .env
+.env.*
