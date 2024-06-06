@@ -15,6 +15,7 @@ export const CreateLab = async (labData: LabCreateDto) => {
           email: labData.email,
           homepageUrl: labData.homepageUrl,
           tags: tagsString,
+          representativeName: labData.representativeName,
           approved: "PENDING",
         },
       });
@@ -28,6 +29,7 @@ export const CreateLab = async (labData: LabCreateDto) => {
           numUnderGraduate: labData.numUnderGraduate,
           roomNo: labData.roomNo,
           campus: labData.campus,
+          googleScholarUrl: labData.googleScholarUrl,
           group: {
             connect: { id: createdGroup.id },
           },
@@ -78,6 +80,7 @@ export const UpdateLab = async (groupId: number, labData: LabUpdateDto) => {
           email: labData.email,
           homepageUrl: labData.homepageUrl,
           tags: tagsString,
+          representativeName: labData.representativeName,
           approved: "UPDATED",
         },
       });
@@ -92,6 +95,7 @@ export const UpdateLab = async (groupId: number, labData: LabUpdateDto) => {
           numUnderGraduate: labData.numUnderGraduate,
           roomNo: labData.roomNo,
           campus: labData.campus,
+          googleScholarUrl: labData.googleScholarUrl,
         },
       });
 

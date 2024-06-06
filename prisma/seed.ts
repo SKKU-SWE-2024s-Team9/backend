@@ -20,6 +20,8 @@ async function main() {
       numUnderGraduate: 0,
       professor: "차수영",
       roomNo: "제2공학관27동 3층 27318호실",
+      googleScholarUrl:
+        "https://scholar.google.co.kr/citations?user=Ye0pjlAAAAAJ",
       group: {
         create: {
           name: "소프트웨어 분석 연구실",
@@ -53,6 +55,7 @@ async function main() {
           homepageUrl: "https://sal.skku.edu",
           logoUrl: "/image/skku.png",
           tags: "소프트웨어 공학,소프트웨어 분석",
+          representativeName: "차수영",
           approved: "APPROVED",
         },
       },
@@ -68,6 +71,7 @@ async function main() {
   const club = await prisma.club.create({
     data: {
       location: "성균관대학교 삼성학술정보관 2층 솦:콤존 격물 480214",
+      numMembers: 40,
       group: {
         create: {
           name: "MAV",
@@ -103,6 +107,7 @@ XR / 실감형 미디어 콘텐츠 제작 기업과 함께하는 비교과 프�
           homepageUrl: "https://skku-mav.github.io/MAV",
           logoUrl: "/image/mav_logo.png",
           tags: "게임,컴퓨터 그래픽스,메타버스,VR,AR,XR",
+          representativeName: "박정휴",
           approved: "APPROVED",
         },
       },

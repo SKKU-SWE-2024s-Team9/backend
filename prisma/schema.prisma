@@ -30,9 +30,12 @@ model Group {
     homepageUrl String
     tags        String
     approved    String
-    User        User?
-    Lab         Lab?
-    Club        Club?
+
+    representativeName String
+
+    User User?
+    Lab  Lab?
+    Club Club?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -43,20 +46,26 @@ model Lab {
     groupId Int   @unique
 
     professor        String
+    googleScholarUrl String
+
     numPostDoc       Int
     numPhd           Int
     numMaster        Int
     numUnderGraduate Int
-    campus           String
-    roomNo           String
+
+    campus String
+    roomNo String
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 }
 
 model Club {
-    group    Group  @relation(fields: [groupId], references: [id])
-    groupId  Int    @unique
+    group   Group @relation(fields: [groupId], references: [id])
+    groupId Int   @unique
+
+    numMembers Int
+
     location String
 
     createdAt DateTime @default(now())

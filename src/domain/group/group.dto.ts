@@ -11,6 +11,7 @@ export interface GroupCreateDto {
   email: string;
   homepageUrl: string;
   tags: string[];
+  representativeName: string;
 
   username: string;
   password: string;
@@ -18,6 +19,7 @@ export interface GroupCreateDto {
 
 export interface LabCreateDto extends GroupCreateDto {
   professor: string;
+  googleScholarUrl: string;
   numPostDoc: number;
   numPhd: number;
   numMaster: number;
@@ -27,6 +29,7 @@ export interface LabCreateDto extends GroupCreateDto {
 }
 
 export interface ClubCreateDto extends GroupCreateDto {
+  numMembers: number;
   location: string;
 }
 
@@ -36,11 +39,13 @@ export interface GroupUpdateDto {
   description: string;
   email: string;
   homepageUrl: string;
+  representativeName: string;
   tags: string[];
 }
 
 export interface LabUpdateDto extends GroupUpdateDto {
   professor: string;
+  googleScholarUrl: string;
   numPostDoc: number;
   numPhd: number;
   numMaster: number;
@@ -50,5 +55,6 @@ export interface LabUpdateDto extends GroupUpdateDto {
 }
 
 export interface ClubUpdateDto extends GroupUpdateDto {
+  numMembers: number;
   location: string;
 }

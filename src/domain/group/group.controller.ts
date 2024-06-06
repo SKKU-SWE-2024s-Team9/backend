@@ -1,5 +1,11 @@
 import express from "express";
 import { prisma } from "../../prisma";
+import {
+  CREATED,
+  INTERNAL_SERVER_ERROR,
+  NOT_FOUND,
+  OK,
+} from "../../util/status-code";
 import { CreateClub, UpdateClub } from "./clubs.service";
 import {
   ClubCreateDto,
@@ -8,12 +14,6 @@ import {
   LabUpdateDto,
 } from "./group.dto";
 import { CreateLab, UpdateLab } from "./labs.service";
-import {
-  CREATED,
-  INTERNAL_SERVER_ERROR,
-  NOT_FOUND,
-  OK,
-} from "../../util/status-code";
 
 const router = express.Router();
 
@@ -47,6 +47,7 @@ router.get("/labs", async (req, res) => {
       },
       select: {
         professor: true,
+        googleScholarUrl: true,
         numPostDoc: true,
         numPhd: true,
         numMaster: true,
@@ -56,6 +57,7 @@ router.get("/labs", async (req, res) => {
         group: {
           select: {
             id: true,
+            representativeName: true,
             name: true,
             logoUrl: true,
             description: true,
@@ -76,6 +78,7 @@ router.get("/labs", async (req, res) => {
       },
       select: {
         professor: true,
+        googleScholarUrl: true,
         numPostDoc: true,
         numPhd: true,
         numMaster: true,
@@ -85,6 +88,7 @@ router.get("/labs", async (req, res) => {
         group: {
           select: {
             id: true,
+            representativeName: true,
             name: true,
             logoUrl: true,
             description: true,
@@ -123,6 +127,7 @@ router.get("/labs/:labId", async (req, res) => {
     },
     select: {
       professor: true,
+      googleScholarUrl: true,
       numPostDoc: true,
       numPhd: true,
       numMaster: true,
@@ -132,6 +137,7 @@ router.get("/labs/:labId", async (req, res) => {
       group: {
         select: {
           id: true,
+          representativeName: true,
           name: true,
           logoUrl: true,
           description: true,
@@ -213,9 +219,11 @@ router.get("/clubs", async (req, res) => {
       },
       select: {
         location: true,
+        numMembers: true,
         group: {
           select: {
             id: true,
+            representativeName: true,
             name: true,
             logoUrl: true,
             description: true,
@@ -236,9 +244,11 @@ router.get("/clubs", async (req, res) => {
       },
       select: {
         location: true,
+        numMembers: true,
         group: {
           select: {
             id: true,
+            representativeName: true,
             name: true,
             logoUrl: true,
             description: true,
@@ -275,9 +285,11 @@ router.get("/clubs/:clubId", async (req, res) => {
     },
     select: {
       location: true,
+      numMembers: true,
       group: {
         select: {
           id: true,
+          representativeName: true,
           name: true,
           logoUrl: true,
           description: true,

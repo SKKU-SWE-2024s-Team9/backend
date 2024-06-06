@@ -15,6 +15,7 @@ export const CreateClub = async (clubData: ClubCreateDto) => {
           email: clubData.email,
           homepageUrl: clubData.homepageUrl,
           tags: tagsString,
+          representativeName: clubData.representativeName,
           approved: "PENDING",
         },
       });
@@ -22,6 +23,7 @@ export const CreateClub = async (clubData: ClubCreateDto) => {
       const createdClub = await prisma.club.create({
         data: {
           location: clubData.location,
+          numMembers: clubData.numMembers,
           group: {
             connect: { id: createdGroup.id },
           },
@@ -71,6 +73,7 @@ export const UpdateClub = async (clubId: number, clubData: ClubUpdateDto) => {
           logoUrl: clubData.logoUrl,
           description: clubData.description,
           tags: tagsString,
+          representativeName: clubData.representativeName,
         },
       });
 
@@ -78,6 +81,7 @@ export const UpdateClub = async (clubId: number, clubData: ClubUpdateDto) => {
         where: { groupId: clubId },
         data: {
           location: clubData.location,
+          numMembers: clubData.numMembers,
         },
       });
 
