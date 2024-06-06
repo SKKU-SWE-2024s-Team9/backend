@@ -32,9 +32,9 @@ router.get("/forms", async (req, res) => {
       description: group.description,
       createdAt: group.createdAt,
     };
-    if (group.Club) {
+    if (group.Lab) {
       forms.lab.push(form);
-    } else if (group.Lab) {
+    } else if (group.Club) {
       forms.club.push(form);
     }
   });
