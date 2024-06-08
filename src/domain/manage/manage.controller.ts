@@ -12,9 +12,9 @@ interface FormResponse {
   createdAt: Date;
   email: string;
   homepageUrl?: string;
-  tags: string[];
+  tags: string;
   representativeName?: string;
-  usesrname: string;
+  // username: string;
 }
 
 interface LabFormResponse extends FormResponse {
@@ -43,8 +43,8 @@ router.get("/forms", async (req, res) => {
   });
 
   const forms = {
-    lab: [] as FormResponse[],
-    club: [] as FormResponse[],
+    lab: [] as LabFormResponse[],
+    club: [] as ClubFormResponse[],
   };
   groups.forEach((group) => {
     const form = {
@@ -56,21 +56,26 @@ router.get("/forms", async (req, res) => {
       homepageUrl: group.homepageUrl,
       tags: group.tags,
       representativeName: group.representativeName,
-      professor: group.Lab?.professor,
-      googleScholarUrl: group.Lab?.googleScholarUrl,
-      numPostDoc: group.Lab?.numPostDoc,
-      numPhd: group.Lab?.numPhd,
-      numMaster: group.Lab?.numMaster,
-      numUnderGraduate: group.Lab?.numUnderGraduate,
-      roomNo: group.Lab?.roomNo,
-      campus: group.Lab?.campus,
-      numMembers: group.Club?.numMembers,
-      location: group.Club?.location
     };
     if (group.Lab) {
-      forms.lab.push(form);
+      forms.lab.push({
+        ...form,
+        professor: group.Lab.professor,
+        googleScholarUrl: group.Lab.googleScholarUrl,
+        numPostDoc: group.Lab.numPostDoc,
+        numPhd: group.Lab.numPhd,
+        numMaster: group.Lab.numMaster,
+        numUnderGraduate: group.Lab.numUnderGraduate,
+        roomNo: group.Lab.roomNo,
+        campus: group.Lab.campus,
+      
+      });
     } else if (group.Club) {
-      forms.club.push(form);
+      forms.club.push({
+        ...form,
+        numMembers: group.Club.numMembers,
+        location: group.Club.location,
+      });
     }
   });
 
