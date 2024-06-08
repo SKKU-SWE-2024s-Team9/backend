@@ -10,6 +10,27 @@ interface FormResponse {
   name: string;
   description: string;
   createdAt: Date;
+  email: string;
+  homepageUrl?: string;
+  tags: string[];
+  representativeName?: string;
+  usesrname: string;
+}
+
+interface LabFormResponse extends FormResponse {
+  professor: string;
+  googleScholarUrl: string;
+  numPostDoc: number;
+  numPhd: number;
+  numMaster: number;
+  numUnderGraduate: number;
+  roomNo: string;
+  campus: string;
+}
+
+interface ClubFormResponse extends FormResponse {
+  numMembers: number;
+  location: string;
 }
 
 router.get("/forms", async (req, res) => {
@@ -31,6 +52,20 @@ router.get("/forms", async (req, res) => {
       name: group.name,
       description: group.description,
       createdAt: group.createdAt,
+      email: group.email,
+      homepageUrl: group.homepageUrl,
+      tags: group.tags,
+      representativeName: group.representativeName,
+      professor: group.Lab?.professor,
+      googleScholarUrl: group.Lab?.googleScholarUrl,
+      numPostDoc: group.Lab?.numPostDoc,
+      numPhd: group.Lab?.numPhd,
+      numMaster: group.Lab?.numMaster,
+      numUnderGraduate: group.Lab?.numUnderGraduate,
+      roomNo: group.Lab?.roomNo,
+      campus: group.Lab?.campus,
+      numMembers: group.Club?.numMembers,
+      location: group.Club?.location
     };
     if (group.Lab) {
       forms.lab.push(form);
