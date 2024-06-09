@@ -14,7 +14,7 @@ interface FormResponse {
   homepageUrl?: string;
   tags: string;
   representativeName?: string;
-  // username: string;
+  logoUrl: string;
 }
 
 interface LabFormResponse extends FormResponse {
@@ -68,12 +68,14 @@ router.get("/forms", async (req, res) => {
         numUnderGraduate: group.Lab.numUnderGraduate,
         roomNo: group.Lab.roomNo,
         campus: group.Lab.campus,
+        logoUrl: group.logoUrl,
       });
     } else if (group.Club) {
       forms.club.push({
         ...form,
         numMembers: group.Club.numMembers,
         location: group.Club.location,
+        logoUrl: group.logoUrl,
       });
     }
   });
