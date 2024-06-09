@@ -68,7 +68,6 @@ router.get("/forms", async (req, res) => {
         numUnderGraduate: group.Lab.numUnderGraduate,
         roomNo: group.Lab.roomNo,
         campus: group.Lab.campus,
-      
       });
     } else if (group.Club) {
       forms.club.push({
@@ -127,8 +126,8 @@ clabu 드림</p>`,
 });
 
 router.post("/decline", async (req, res) => {
-  const groupId = req.body.groupId;
-  const description = req.body.description;
+  const groupId = req.body.groupId as number;
+  const description = req.body.description as string;
 
   try {
     const targetGroup = await prisma.group.findUnique({
@@ -138,6 +137,7 @@ router.post("/decline", async (req, res) => {
       select: {
         name: true,
         email: true,
+        approved: true,
       },
     });
 
@@ -152,6 +152,27 @@ ${
   description ? `사유: ${description}<br>` : ``
 }관련 문의사항은 clabumanager@gmail.com으로 메일 주시기 바랍니다. <br><br>
 감사합니다.<br>clabu 드림</p>`,
+      });
+
+      await prisma.$transaction(async (prisma) => {
+        if (targetGroup.approved == "PENDING") {
+          await prisma.group.delete({
+            where: {
+              id: groupId,
+            },
+          });
+          await prisma.user.delete({
+            where: {
+              groupId: groupId,
+            },
+          });
+        } else if (targetGroup.approved == "UPDATED") {
+          await prisma.group.delete({
+            where: {
+              id: groupId,
+            },
+          });
+        }
       });
       res.status(OK).end();
     } else {
