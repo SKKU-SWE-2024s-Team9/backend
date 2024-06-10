@@ -72,8 +72,11 @@ export const UpdateClub = async (clubId: number, clubData: ClubUpdateDto) => {
           name: clubData.groupName,
           logoUrl: clubData.logoUrl,
           description: clubData.description,
+          email: clubData.email,
+          homepageUrl: clubData.homepageUrl,
           tags: tagsString,
           representativeName: clubData.representativeName,
+          approved: "UPDATED",
         },
       });
 

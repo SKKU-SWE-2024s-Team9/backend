@@ -70,7 +70,14 @@ export const UpdateLab = async (groupId: number, labData: LabUpdateDto) => {
   try {
     const tagsString = labData.tags.join(",");
 
-    const lab = await prisma.$transaction(async (prisma) => {
+    let lab = await prisma.lab.findUnique({
+      where: { groupId: groupId },
+    });
+    if (!lab) {
+      throw new Error("The group is not a lab.");
+    }
+
+    lab = await prisma.$transaction(async (prisma) => {
       const updatedGroup = await prisma.group.update({
         where: { id: groupId },
         data: {
