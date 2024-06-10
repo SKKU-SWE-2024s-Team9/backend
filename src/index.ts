@@ -39,10 +39,6 @@ async function main() {
       return uuid.v4();
     },
   };
-  if (app.get("env") === "production") {
-    app.set("trust proxy", 1);
-    sessionInfo.cookie!.secure = true;
-  }
   app.use(session(sessionInfo));
 
   passport.configure(app);
