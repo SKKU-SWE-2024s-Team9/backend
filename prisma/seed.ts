@@ -90,15 +90,21 @@ async function main() {
 
   const leaders: number[] = [];
 
-  clubData.forEach(async (data: ClubCreateDto) => {
-    const { club, clubLeader } = await seedClub(data);
-    leaders.push(clubLeader.id);
-  });
-  labData.forEach(async (data: LabCreateDto) => {
-    const { lab, labLeader } = await seedLab(data);
-    leaders.push(labLeader.id);
-  });
 
+  const clubPromises = clubData.map(async (data: ClubCreateDto) => {
+    const { club, clubLeader } = await seedClub(data);
+    return clubLeader.id;
+  });
+  const labPromises = labData.map(async (data: LabCreateDto) => {
+    const { lab, labLeader } = await seedLab(data);
+    return labLeader.id;
+  });
+  
+  const clubLeaders = await Promise.all(clubPromises);
+  const labLeaders = await Promise.all(labPromises);
+
+  leaders.push(...clubLeaders, ...labLeaders);
+  
   await prisma.user.updateMany({
     data: {
       activated: true,
